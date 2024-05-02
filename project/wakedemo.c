@@ -53,28 +53,28 @@ short drawPos[2] = {1, 1}, controlPos[2] = {2, 2};
 short colVelocity = 1, colLimits[2] = {1, screenWidth/2};
 short colLimits_2[2] = {1, screenHeight/2};
 
-// Function to draw Bibi the kitty cat
-void draw_kitty_cat(int x, int y, u_int color){
-  fillCircle(x, y, 15, color); // Head
-  fillCircle(x - 7, y + 5, 3, color); // Left ear
-  fillCircle(x + 7, y + 5, 3, color); // Right ear
-  fillCircle(x - 5, y - 2, 2, COLOR_BLACK); // Left eye
-  fillCircle(x + 5, y - 2, 2, COLOR_BLACK); // Right eye
-  drawLine(x - 2, y + 3, x + 2, y + 3, COLOR_BLACK); // Nose
-  drawArc(x, y + 5, 7, 180, 360, 2, COLOR_BLACK); // Mouth
+// Function to draw the square on the screen
+void draw_ball(int col, int row, unsigned short color){
+  fillRectangle(col-1, row-1, 10, 10, color); // Draws a square at the specified position
 }
 
-// Function to update the kitty cat's position on screen
-void screen_update_kitty_cat(){
+/* 
+ * Updates the position of the square on the screen.
+ * If the position has changed, it erases the square from its previous position
+ * by drawing a blue square to match the screen's color.
+ * Then, it draws the square at the new position.
+ */
+void screen_update_ball(){
   for (char axis = 0; axis < 2; axis++)
-    if (drawPos[axis] != controlPos[axis])
+    if (drawPos[axis] != controlPos[axis]) /* Check if position has changed */
       goto redraw;
-  return;
+  return; /* If no change, nothing to do */
  redraw:
-  draw_kitty_cat(drawPos[0], drawPos[1], COLOR_BLUE); // Erase previous position
+  draw_ball(drawPos[0], drawPos[1], COLOR_BLUE); /* Erase previous square */
   for (char axis = 0; axis < 2; axis++)
     drawPos[axis] = controlPos[axis];
-  draw_kitty_cat(drawPos[0], drawPos[1], colorChange); // Draw Kitty Cat in new position
+  // Draw the square at the new position with the specified color
+  draw_ball(drawPos[0], drawPos[1], colorChange);
 }
 
 // State machine changes every second, changing frequencies for songs

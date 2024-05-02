@@ -5,11 +5,6 @@
 The goal is to create a program that allows a figure to move left and right and vertically (up and down) in response to directional button input from the user.It should also be able to move diagonally when two buttons are pressed at once. Also, a song should be able to be played by the computer in sync with the movements of the figure.
 
 
-## Main
-
-The main is wakedemo.c but it's the project.
-
-
 ## Run
 
 To compile files:         'make all'

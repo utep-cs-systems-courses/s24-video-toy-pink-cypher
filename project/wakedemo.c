@@ -1,8 +1,8 @@
 #include <msp430.h>
+#include "buzzer.h"
 #include <libTimer.h>
 #include "lcdutils.h"
 #include "lcddraw.h"
-#include "buzzer.h"
 
 #define LED BIT6
 #define SW1 1
@@ -10,6 +10,16 @@
 #define SW3 4
 #define SW4 8
 #define SWITCHES 15
+
+// Define colors
+#define COLOR_LIGHT_PINK 0xF6B6
+#define COLOR_INDIGO     0x4810
+
+// Declare variables
+int switches = 0;
+int changeSong = 0;
+int redrawScreen = 0;
+
 
 // Define colors
 u_int colorChange = COLOR_LIGHT_PINK;
@@ -35,7 +45,7 @@ void switch_init(){
 void switch_interrupt_handler(){
   char p2val = switch_update_interrupt_sense();
   // Define 'switches' here or globally
-  switches = ~p2val & SWITCHES;
+ switches = ~p2val & SWITCHES;
 }
 
 // Arrays and variables for kitty cat's position and movement

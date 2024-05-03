@@ -125,7 +125,7 @@ void main()
   clearScreen(COLOR_BLUE);
   while (1) {			/* forever */
     if (redrawScreen) {
-      redrawScreen = 0;
+      xsxredrawScreen = 0;
       update_shape();
     }
     P1OUT &= ~LED;	/* led off */

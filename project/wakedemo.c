@@ -18,6 +18,10 @@ char blue = 31, green = 0, red = 31; /* RGB color values */
 unsigned char step = 0; /* Step counter for animation */
 short redrawScreen = 1; /* Flag to indicate screen redraw */
 
+// Define an array of background colors
+u_int backgroundColors[] = {COLOR_PURPLE, COLOR_BLUE, COLOR_YELLOW, COLOR_GREEN};
+int currentColorIndex = 0; // Index of the current background color
+
 /* Function to update switch interrupt sensing */
 static char switch_update_interrupt_sense()
 {
@@ -45,6 +49,11 @@ void switch_interrupt_handler()
 {
   char p2val = switch_update_interrupt_sense();
   switches = ~p2val & SWITCHES;
+
+  // Cycle through background colors when a switch is pressed
+  currentColorIndex = (currentColorIndex + 1) % (sizeof(backgroundColors) / sizeof(backgroundColors[0]));
+  clearScreen(backgroundColors[currentColorIndex]); // Set the new background color
+  redrawScreen = 1; // Flag for screen redraw
 }
 
 u_int controlFontColor = COLOR_GREEN; /* Color for text */
@@ -83,7 +92,7 @@ void main()
   enableWDTInterrupts();      /**< Enable periodic interrupt */
   or_sr(0x8);	              /**< GIE (enable interrupts) */
   
-  clearScreen(COLOR_PURPLE); // Set background color to purple
+  clearScreen(COLOR_PURPLE); // Set initial background color to purple
   while (1) {			/* Forever loop */
     if (redrawScreen) {
       redrawScreen = 0; /* Reset redraw flag */

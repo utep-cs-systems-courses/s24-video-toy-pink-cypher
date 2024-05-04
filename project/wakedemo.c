@@ -2,6 +2,7 @@
 #include <libTimer.h>
 #include "lcdutils.h"
 #include "lcddraw.h"
+#include <stdlib.h>
 
 // WARNING: LCD DISPLAY USES P1.0.  Do not modify!!!
 
@@ -18,7 +19,7 @@ char blue = 31, green = 0, red = 31; /* RGB color values */
 unsigned char step = 0; /* Step counter for animation */
 short redrawScreen = 1; /* Flag to indicate screen redraw */
 
-// Define an array of background colors
+// Define an array of background colors for each switch
 u_int backgroundColors[] = {COLOR_PURPLE, COLOR_BLUE, COLOR_YELLOW, COLOR_GREEN};
 int currentColorIndex = 0; // Index of the current background color
 
@@ -50,8 +51,16 @@ void switch_interrupt_handler()
   char p2val = switch_update_interrupt_sense();
   switches = ~p2val & SWITCHES;
 
-  // Cycle through background colors when a switch is pressed
-  currentColorIndex = (currentColorIndex + 1) % (sizeof(backgroundColors) / sizeof(backgroundColors[0]));
+  // Determine which switch was pressed and set the background color accordingly
+  if (switches & SW1)
+    currentColorIndex = 0; // Set background to the first color for SW1
+  else if (switches & SW2)
+    currentColorIndex = 1; // Set background to the second color for SW2
+  else if (switches & SW3)
+    currentColorIndex = 2; // Set background to the third color for SW3
+  else if (switches & SW4)
+    currentColorIndex = 3; // Set background to the fourth color for SW4
+
   clearScreen(backgroundColors[currentColorIndex]); // Set the new background color
   redrawScreen = 1; // Flag for screen redraw
 }
@@ -122,6 +131,14 @@ void update_shape()
   fillRectangle(73, 84, 10, 10, COLOR_BLUE); // Adjust eyes position and color
   // Draw nose
   fillRectangle(59, 94, 6, 6, COLOR_PINK); // Adjust nose position
+  
+  // Draw pink dots on the background
+  for (int i = 0; i < 10; i++) { // Draw 10 pink dots
+    int x = rand() % screenWidth; // Random x coordinate
+    int y = rand() % screenHeight; // Random y coordinate
+    int dotSize = 3; // Size of the dot
+    fillRectangle(x, y, dotSize, dotSize, COLOR_PINK); // Draw the dot
+  }
 }
 
 /* Interrupt vector for Port 2 (switches) */

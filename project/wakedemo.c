@@ -116,7 +116,6 @@ void main()
 /* Update the shape on the screen */
 void update_shape()
 {
-  // Draw bunny directly without using separate functions
   // Draw head
   fillRectangle(31, 69, 64, 45, COLOR_WHITE);
   // Draw left ear
